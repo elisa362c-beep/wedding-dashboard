@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elisa & Nicos — Day Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --sand: #F5F0E8; --sand-mid: #EDE6D6; --sand-deep: #D9CEBC;
+  --ink: #2B2620; --ink-mid: #5C5044; --ink-light: #9A8E80;
+  --olive: #6B7A4A; --olive-light: #E8EEDE;
+  --terra: #B85C38; --terra-light: #F5E8E2;
+  --sea: #3A6B7A; --sea-light: #E2EDF0;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Jost', system-ui, sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--sand); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.6; min-height: 100vh; }
+
+/* HEADER */
+.site-header { background: var(--sand); border-bottom: 1px solid var(--sand-deep); padding: 0 2rem; position: sticky; top: 0; z-index: 100; }
+.header-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+.header-logo { font-family: var(--serif); font-size: 22px; font-weight: 400; font-style: italic; color: var(--ink); text-decoration: none; }
+.header-date { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); }
+
+/* HERO */
+.hero { text-align: center; padding: 3.5rem 2rem 2.5rem; border-bottom: 1px solid var(--sand-deep); }
+.hero-eyebrow { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1rem; }
+.hero h1 { font-family: var(--serif); font-size: clamp(44px, 8vw, 76px); font-weight: 300; font-style: italic; line-height: 1.05; color: var(--ink); margin-bottom: 1rem; }
+.hero-divider { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 1rem 0; color: var(--ink-light); font-size: 13px; letter-spacing: 0.08em; }
+.hero-divider::before, .hero-divider::after { content: ''; width: 60px; height: 0.5px; background: var(--sand-deep); }
+.hero-meta { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+.hero-meta-item { text-align: center; }
+.hero-meta-item .label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-light); display: block; margin-bottom: 3px; }
+.hero-meta-item .value { font-family: var(--serif); font-size: 17px; font-weight: 400; color: var(--ink); }
+
+/* TABS */
+.tabs-wrap { position: sticky; top: 56px; background: var(--sand); border-bottom: 1px solid var(--sand-deep); z-index: 90; }
+.tabs { max-width: 900px; margin: 0 auto; display: flex; padding: 0 2rem; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab-btn { padding: 14px 20px; font-family: var(--sans); font-size: 11px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); border: none; border-bottom: 2px solid transparent; background: none; cursor: pointer; white-space: nowrap; transition: color .2s, border-color .2s; margin-bottom: -1px; }
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active { color: var(--ink); border-bottom-color: var(--terra); }
+
+/* MAIN */
+.main { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* SECTION HEADER */
+.sec-head { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-light); padding: 0.5rem 0; border-top: 1px solid var(--sand-deep); margin-top: 2rem; margin-bottom: 0.5rem; }
+.sec-head.first { margin-top: 0; border-top: none; }
+
+/* OVERVIEW TIMELINE — big clean list */
+.ov-list { margin-top: 0.5rem; }
+.ov-row { display: flex; align-items: baseline; gap: 0; padding: 14px 0; border-bottom: 0.5px solid var(--sand-deep); }
+.ov-row:last-child { border-bottom: none; }
+.ov-time { font-family: var(--serif); font-size: 28px; font-weight: 300; color: var(--terra); min-width: 110px; line-height: 1; flex-shrink: 0; }
+.ov-body { flex: 1; }
+.ov-title { font-family: var(--serif); font-size: 20px; font-weight: 400; color: var(--ink); line-height: 1.2; }
+.ov-meta { font-size: 12px; color: var(--ink-light); margin-top: 2px; letter-spacing: 0.03em; }
+
+/* SATURDAY TIMELINE */
+.tl-row { display: grid; grid-template-columns: 68px 1fr; gap: 16px; padding: 11px 0; border-bottom: 0.5px solid var(--sand-deep); align-items: start; }
+.tl-row:last-child { border-bottom: none; }
+.tl-time { font-family: var(--serif); font-size: 15px; color: var(--terra); padding-top: 1px; }
+.tl-title { font-size: 14px; font-weight: 400; color: var(--ink); line-height: 1.4; }
+.tl-meta { font-size: 12px; color: var(--ink-light); margin-top: 2px; }
+
+/* TASK LIST */
+.task-row { display: grid; grid-template-columns: 110px 1fr; gap: 14px; padding: 10px 0; border-bottom: 0.5px solid var(--sand-deep); align-items: start; }
+.task-row:last-child { border-bottom: none; }
+.task-who { font-size: 11px; color: var(--ink-light); padding-top: 2px; line-height: 1.5; }
+.task-what { font-size: 14px; color: var(--ink); }
+.task-sub { font-size: 12px; color: var(--ink-light); margin-top: 2px; }
+.day-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: white; background: var(--ink-mid); display: inline-block; padding: 3px 10px; border-radius: 2px; margin: 1.5rem 0 0.5rem; }
+
+/* BADGE */
+.badge { display: inline-block; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; margin-bottom: 2px; }
+.badge-terra { background: var(--terra-light); color: var(--terra); }
+.badge-sea { background: var(--sea-light); color: var(--sea); }
+.badge-olive { background: var(--olive-light); color: var(--olive); }
+
+/* DETAIL BLOCKS */
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 0.5rem; }
+.d-block { background: white; border: 1px solid var(--sand-deep); border-radius: 4px; padding: 1.25rem 1.4rem; }
+.d-block h3 { font-family: var(--serif); font-size: 18px; font-weight: 400; font-style: italic; color: var(--ink); margin-bottom: 0.6rem; padding-bottom: 0.6rem; border-bottom: 0.5px solid var(--sand-deep); }
+.d-block ul { list-style: none; }
+.d-block ul li { font-size: 13px; color: var(--ink-mid); padding: 5px 0; border-bottom: 0.5px solid var(--sand-mid); line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
+.d-block ul li:last-child { border-bottom: none; }
+.d-block ul li::before { content: '—'; color: var(--sand-deep); flex-shrink: 0; font-size: 11px; margin-top: 2px; }
+.d-block a { color: var(--sea); font-size: 13px; text-decoration: none; border-bottom: 0.5px solid var(--sea); }
+.d-block a:hover { opacity: 0.7; }
+
+/* PHOTO UPLOAD (used by the gallery) */
+.photo-input { display: none; }
+
+/* LIGHTBOX */
+.lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999; align-items: center; justify-content: center; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 4px; box-shadow: 0 8px 40px rgba(0,0,0,0.4); }
+.lightbox-close { position: absolute; top: 20px; right: 24px; color: white; font-size: 28px; cursor: pointer; background: none; border: none; line-height: 1; }
+.lightbox-del { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--terra); color: white; border: none; border-radius: 3px; padding: 7px 18px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+
+/* INSTAGRAM-STYLE GALLERY */
+.gallery-intro { font-size: 13px; color: var(--ink-mid); margin-top: 0.4rem; margin-bottom: 1rem; max-width: 520px; }
+.insta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+.insta-item { position: relative; aspect-ratio: 1 / 1; overflow: hidden; cursor: pointer; background: var(--sand-mid); }
+.insta-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s ease; }
+.insta-item:hover img { transform: scale(1.06); }
+.insta-add { aspect-ratio: 1 / 1; border: 1.5px dashed var(--sand-deep); background: var(--sand); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--ink-light); font-size: 28px; font-weight: 300; transition: border-color .2s, color .2s; }
+.insta-add:hover { border-color: var(--terra); color: var(--terra); }
+@media (min-width: 620px) {
+  .insta-grid { grid-template-columns: repeat(4, 1fr); gap: 4px; }
+}
+
+/* MAP BLOCK */
+.map-wrap { border-radius: 4px; overflow: hidden; border: 1px solid var(--sand-deep); margin-top: 0.5rem; }
+.map-wrap iframe { display: block; width: 100%; height: 320px; border: none; }
+
+/* TODO */
+.todo-progress-wrap { margin-bottom: 1.5rem; }
+.todo-progress-labels { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 7px; }
+.todo-bar-track { height: 3px; background: var(--sand-deep); border-radius: 2px; overflow: hidden; }
+.todo-bar-fill { height: 100%; background: var(--olive); border-radius: 2px; width: 0%; transition: width .4s ease; }
+.todo-list { margin-bottom: 0.25rem; }
+.todo-item { display: flex; align-items: center; gap: 14px; padding: 10px 0; border-bottom: 0.5px solid var(--sand-deep); cursor: pointer; user-select: none; }
+.todo-item:last-child { border-bottom: none; }
+.todo-item input[type="checkbox"] { display: none; }
+.todo-box { flex-shrink: 0; width: 18px; height: 18px; border: 1px solid var(--sand-deep); border-radius: 3px; background: white; display: flex; align-items: center; justify-content: center; transition: background .15s, border-color .15s; }
+.todo-box::after { content: ''; width: 5px; height: 9px; border-right: 1.5px solid white; border-bottom: 1.5px solid white; transform: rotate(45deg) translate(-1px,-1px); opacity: 0; transition: opacity .15s; }
+.todo-item.done .todo-box { background: var(--olive); border-color: var(--olive); }
+.todo-item.done .todo-box::after { opacity: 1; }
+.todo-content { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.todo-title { font-size: 14px; color: var(--ink); transition: color .2s; }
+.todo-item.done .todo-title { color: var(--ink-light); text-decoration: line-through; text-decoration-color: var(--sand-deep); }
+.todo-who { font-size: 11px; color: var(--ink-light); letter-spacing: 0.04em; }
+
+/* TASKS detail grid */
+.tasks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 0.5rem; }
+
+/* CONTACTS */
+.contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 0.5rem; }
+.contact-card { background: white; border: 1px solid var(--sand-deep); border-radius: 4px; padding: 1rem 1.1rem; display: flex; align-items: center; gap: 12px; }
+.contact-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--sand-mid); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 16px; font-style: italic; color: var(--ink-mid); flex-shrink: 0; }
+.contact-name { font-size: 14px; font-weight: 400; color: var(--ink); line-height: 1.3; }
+.contact-role { font-size: 11px; color: var(--ink-light); margin-top: 1px; }
+.contact-wa { display: inline-flex; align-items: center; gap: 5px; margin-top: 5px; font-size: 11px; color: #25D366; text-decoration: none; font-weight: 400; }
+.contact-wa svg { width: 14px; height: 14px; flex-shrink: 0; }
+.contact-wa:hover { opacity: 0.75; }
+
+/* SPEECH */
+.speech-row { display: grid; grid-template-columns: 90px 1fr; gap: 12px; padding: 8px 0; border-bottom: 0.5px solid var(--sand-mid); align-items: start; }
+.speech-row:last-child { border-bottom: none; }
+.speech-num { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--terra); padding-top: 2px; }
+.speech-who { font-size: 13px; color: var(--ink); line-height: 1.5; }
+
+/* DROPDOWN rows */
+.ov-row.has-dropdown { cursor: pointer; }
+.ov-toggle { display: flex; align-items: center; gap: 8px; }
+.ov-toggle-icon { font-size: 11px; color: var(--ink-light); transition: transform .25s; flex-shrink: 0; }
+.ov-row.has-dropdown.open .ov-toggle-icon { transform: rotate(90deg); }
+.ov-dropdown { display: none; padding: 10px 0 4px 0; border-top: 0.5px solid var(--sand-mid); margin-top: 6px; }
+.ov-row.has-dropdown.open .ov-dropdown { display: block; }
+.ov-dropdown-row { display: flex; gap: 10px; padding: 4px 0; font-size: 12px; color: var(--ink-mid); }
+.ov-dropdown-time { min-width: 46px; color: var(--terra); font-family: var(--serif); font-size: 13px; flex-shrink: 0; }
+
+/* DIVIDER thick */
+.ov-divider { border: none; border-top: 2px solid var(--sand-deep); margin: 0; }
+
+/* FOOTER */
+footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--ink-light); border-top: 1px solid var(--sand-deep); letter-spacing: 0.06em; }
+footer a { color: var(--ink-light); text-decoration: none; }
+
+@media (max-width: 600px) {
+  .hero { padding: 2.5rem 1.25rem 2rem; }
+  .main { padding: 1.5rem 1.25rem 3rem; }
+  .task-row { grid-template-columns: 1fr; gap: 3px; }
+  .task-who { color: var(--terra); }
+  .tl-row { grid-template-columns: 58px 1fr; gap: 12px; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .ov-time { font-size: 22px; min-width: 90px; }
+  .ov-title { font-size: 17px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="header-logo" href="https://nicosandelisa.wixsite.com/nicosandelisa" target="_blank">E &amp; N</a>
+    <span class="header-date">19 September 2026 · Hydra</span>
+  </div>
+</header>
+
+<section class="hero">
+  <p class="hero-eyebrow">Wedding Day Plan</p>
+  <h1>Elisa &amp; Nicos</h1>
+  <div class="hero-divider">Hydra, Greece</div>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><span class="label">Date</span><span class="value">Saturday 19 Sept</span></div>
+    <div class="hero-meta-item"><span class="label">Ceremony</span><span class="value">Lefteraki's Taverna</span></div>
+    <div class="hero-meta-item"><span class="label">Reception</span><span class="value">Lefteraki's Taverna</span></div>
+  </div>
+</section>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showPanel('overview',this)">Wedding Day</button>
+    <button class="tab-btn" onclick="showPanel('tasks',this)">Tasks</button>
+    <button class="tab-btn" onclick="showPanel('details',this)">Space set-up</button>
+    <button class="tab-btn" onclick="showPanel('locations',this)">Key locations</button>
+    <button class="tab-btn" onclick="showPanel('team',this)">Contact details</button>
+  </div>
+</div>
+
+<main class="main">
+
+  <!-- ══ OVERVIEW (merged Wedding Day) ══ -->
+  <div id="overview" class="panel active">
+    <div class="ov-list">
+
+      <!-- Morning -->
+      <div class="ov-row has-dropdown" onclick="toggleOvDropdown(this)">
+        <div class="ov-time">13:00</div>
+        <div class="ov-body">
+          <div class="ov-toggle">
+            <div class="ov-title">Elisa — hair &amp; makeup</div>
+            <span class="ov-toggle-icon">▶</span>
+          </div>
+          <div class="ov-meta">Location: Commo Gousto</div>
+          <div class="ov-dropdown">
+            <div class="ov-dropdown-row"><span class="ov-dropdown-time">12:00</span><span>Aunt, grandmother &amp; Soula</span></div>
+            <div class="ov-dropdown-row"><span class="ov-dropdown-time">13:00</span><span>Elisa, mom, Antonella &amp; Elena</span></div>
+            <div class="ov-dropdown-row"><span class="ov-dropdown-time">14:00</span><span>Tasoula, Virginia &amp; Theano</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ov-row">
+        <div class="ov-time">13:00</div>
+        <div class="ov-body">
+          <div class="ov-title">Nicos dressing party</div>
+          <div class="ov-meta">Location: <a href="https://maps.app.goo.gl/XST55vs5XnS5vtqY9?g_st=ic" target="_blank" style="color:var(--sea);text-decoration:none;border-bottom:0.5px solid var(--sea)">Douskos Guest House ↗</a> · food by Nicos' dad</div>
+        </div>
+      </div>
+
+      <div class="ov-row">
+        <div class="ov-time">14:00</div>
+        <div class="ov-body">
+          <div class="ov-title">Mandatory relax time</div>
+          <div class="ov-meta">Task force</div>
+        </div>
+      </div>
+
+      <div class="ov-row">
+        <div class="ov-time">15:00</div>
+        <div class="ov-body">
+          <div class="ov-title">Elisa dressing party</div>
+          <div class="ov-meta">Location: <a href="https://maps.app.goo.gl/W9fxztwZvQqsY7xw6" target="_blank" style="color:var(--sea);text-decoration:none;border-bottom:0.5px solid var(--sea)">Ecloge Villa ↗</a> · food by Mattia</div>
+        </div>
+      </div>
+
+      <hr class="ov-divider">
+
+      <div class="ov-row has-dropdown" onclick="toggleOvDropdown(this)">
+        <div class="ov-time">16:30</div>
+        <div class="ov-body">
+          <div class="ov-toggle">
+            <div class="ov-title">Virginia &amp; Emanuele at the venue</div>
+            <span class="ov-toggle-icon">▶</span>
+          </div>
+          <div class="ov-meta">To check everything is fine and welcome vice-mayor</div>
+          <div class="ov-dropdown">
+            <div class="ov-dropdown-row"><span class="ov-dropdown-time"></span><span>⚠️ BRING YOUR ID!</span></div>
+            <div class="ov-dropdown-row"><span class="ov-dropdown-time"></span><span>Pen for signing papers</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ov-row has-dropdown" onclick="toggleOvDropdown(this)">
+        <div class="ov-time">16:45</div>
+        <div class="ov-body">
+          <div class="ov-toggle">
+            <div class="ov-title">Nicos welcomes guests</div>
+            <span class="ov-toggle-icon">▶</span>
+          </div>
+          <div class="ov-meta">Hydra Port · coordinate with Virginia on timings if it's taking too long</div>
+          <div class="ov-dropdown">
+            <div class="ov-dropdown-row"><span class="ov-dropdown-time">~17:30</span><span>Nicos picks up Elisa at the Hotel · Elo/photos</span></div>
+            <div class="ov-dropdown-row"><span class="ov-dropdown-time"></span><span>Elo takes taxi boat to Lefteraki's. When she arrives, Wedding song starts.</span></div>
+            <div class="ov-dropdown-row"><span class="ov-dropdown-time"></span><span>Elisa &amp; Nicos arrive together at Lefteraki's.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ov-row">
+        <div class="ov-time">17:00</div>
+        <div class="ov-body">
+          <div class="ov-title">Welcome drinks</div>
+          <div class="ov-meta">Lefteraki's beach · until 18:00</div>
+        </div>
+      </div>
+
+      <div class="ov-row has-dropdown" onclick="toggleOvDropdown(this)">
+        <div class="ov-time">18:00</div>
+        <div class="ov-body">
+          <div class="ov-toggle">
+            <div class="ov-title">Ceremony</div>
+            <span class="ov-toggle-icon">▶</span>
+          </div>
+          <div class="ov-meta">Lefteraki's Taverna · ~30–45 min</div>
+          <div class="ov-dropdown">
+            <div class="ov-dropdown-row"><span class="ov-dropdown-time"></span><span>Elo takes taxi boat to Lefteraki's. When she arrives, Wedding song starts.</span></div>
+            <div class="ov-dropdown-row"><span class="ov-dropdown-time"></span><span>Elisa &amp; Nicos arrive together at Lefteraki's.</span></div>
+            <div class="ov-dropdown-row"><span class="ov-dropdown-time"></span><span>Elisa's dad and Nicos' mom are waiting at the pier. Nicos gets down the boat first and his mom walks him to the aisle. Once that's done, Elisa's dad gets her down the boat and walks her to Nicos.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ov-row">
+        <div class="ov-time">19:00</div>
+        <div class="ov-body">
+          <div class="ov-title">Brindisi &amp; photos</div>
+        </div>
+      </div>
+
+      <div class="ov-row">
+        <div class="ov-time">20:00</div>
+        <div class="ov-body">
+          <div class="ov-title">Dinner</div>
+          <div class="ov-meta">Lefteraki's taverna</div>
+        </div>
+      </div>
+      <div class="ov-row">
+        <div class="ov-time">22:30</div>
+        <div class="ov-body">
+          <div class="ov-title">Cake &amp; desserts</div>
+        </div>
+      </div>
+      <div class="ov-row">
+        <div class="ov-time">23:00</div>
+        <div class="ov-body">
+          <div class="ov-title">Party</div>
+          <div class="ov-meta">Until 02:00</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <!-- ══ TASKS ══ -->
+  <div id="tasks" class="panel">
+    <div class="todo-progress-wrap">
+      <div class="todo-progress-labels">
+        <span id="todo-done-count">0 of 12 done</span>
+        <span id="todo-pct">0%</span>
+      </div>
+      <div class="todo-bar-track"><div class="todo-bar-fill" id="todo-bar"></div></div>
+    </div>
+
+    <div class="tasks-grid">
+
+      <div class="d-block">
+        <h3>Wednesday</h3>
+        <div class="todo-list">
+          <label class="todo-item" data-id="t1">
+            <input type="checkbox" class="todo-check" data-id="t1">
+            <span class="todo-box"></span>
+            <span class="todo-content"><span class="todo-title">Flowers for bouquet</span></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="d-block">
+        <h3>Thursday</h3>
+        <div class="todo-list">
+          <label class="todo-item" data-id="t2">
+            <input type="checkbox" class="todo-check" data-id="t2">
+            <span class="todo-box"></span>
+            <span class="todo-content"><span class="todo-title">Wedding favours to taverna — check lemons &amp; food</span><span class="todo-who">Nicos' parents</span></span>
+          </label>
+          <label class="todo-item" data-id="t3">
+            <input type="checkbox" class="todo-check" data-id="t3">
+            <span class="todo-box"></span>
+            <span class="todo-content"><span class="todo-title">Bring paperwork to town hall (mitropoli)</span><span class="todo-who">Elisa &amp; Nicos</span></span>
+          </label>
+          <label class="todo-item" data-id="t4">
+            <input type="checkbox" class="todo-check" data-id="t4">
+            <span class="todo-box"></span>
+            <span class="todo-content"><span class="todo-title">Printed material to taverna</span><span class="todo-who">Nicos' parents / Panos</span></span>
+          </label>
+          <label class="todo-item" data-id="t5">
+            <input type="checkbox" class="todo-check" data-id="t5">
+            <span class="todo-box"></span>
+            <span class="todo-content"><span class="todo-title">Nails &amp; makeup trial</span><span class="todo-who">Elisa</span></span>
+          </label>
+          <label class="todo-item" data-id="t6">
+            <input type="checkbox" class="todo-check" data-id="t6">
+            <span class="todo-box"></span>
+            <span class="todo-content"><span class="todo-title">Dinner with parents</span><span class="todo-who">Everyone</span></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="d-block">
+        <h3>Friday</h3>
+        <div class="todo-list">
+          <label class="todo-item" data-id="t7">
+            <input type="checkbox" class="todo-check" data-id="t7">
+            <span class="todo-box"></span>
+            <span class="todo-content"><span class="todo-title">Arrive on island</span><span class="todo-who">Task force</span></span>
+          </label>
+          <label class="todo-item" data-id="t8">
+            <input type="checkbox" class="todo-check" data-id="t8">
+            <span class="todo-box"></span>
+            <span class="todo-content"><span class="todo-title">Set up decorations at Lefteraki's</span><span class="todo-who">Task force</span></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="d-block">
+        <h3>Saturday</h3>
+        <div class="todo-list">
+          <label class="todo-item" data-id="t9">
+            <input type="checkbox" class="todo-check" data-id="t9">
+            <span class="todo-box"></span>
+            <span class="todo-content"><span class="todo-title">Coordinate with photographer and DJ</span><span class="todo-who">Task force</span></span>
+          </label>
+          <label class="todo-item" data-id="t10">
+            <input type="checkbox" class="todo-check" data-id="t10">
+            <span class="todo-box"></span>
+            <span class="todo-content"><span class="todo-title">Pick up flowers and bring to Nicos</span><span class="todo-who">By 14:00 · Task force or moms</span></span>
+          </label>
+          <label class="todo-item" data-id="t11">
+            <input type="checkbox" class="todo-check" data-id="t11">
+            <span class="todo-box"></span>
+            <span class="todo-content"><span class="todo-title">Go to Lefteraki's to set up decorations</span><span class="todo-who">Tables, chairs, dessert table, wedding favours table · Emi, Fra +1</span></span>
+          </label>
+          <label class="todo-item" data-id="t12">
+            <input type="checkbox" class="todo-check" data-id="t12">
+            <span class="todo-box"></span>
+            <span class="todo-content"><span class="todo-title">Coordinate arrival of guests and timings</span><span class="todo-who">17:00–18:00 · Emi &amp; Virginia coordinate with Theano</span></span>
+          </label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ DETAILS ══ -->
+  <div id="details" class="panel">
+
+    <p class="sec-head first">Cards</p>
+    <div class="detail-grid">
+
+      <div class="d-block">
+        <h3>Getting there</h3>
+        <ul>
+          <li>Emanuele &amp; Virginia at the beach since 16:30 latest to welcome vice-mayor and the guests when they arrive</li>
+          <li>Nicos welcomes everyone at the port</li>
+          <li>Boats are decorated with lace ribbons</li>
+        </ul>
+      </div>
+
+      <div class="d-block">
+        <h3>Ceremony set-up</h3>
+        <ul>
+          <li>Chairs set for 30 people</li>
+          <li>Wine and drinks ready to serve</li>
+          <li>Ceremony table with flowers &amp; decorations, pens</li>
+          <li>Emanuele and Virginia to bring IDs!</li>
+          <li>Prepare baskets with fans inside</li>
+          <li>Set translation booklet on the chairs</li>
+        </ul>
+      </div>
+
+      <div class="d-block">
+        <h3>Dinner set-up</h3>
+        <ul>
+          <li>Table &amp; chair decorations</li>
+          <li>Nicos and Elisa's chairs have a personalised chair cover canvas</li>
+          <li>Set up guest allocation table</li>
+          <li>One menu card on each plate</li>
+          <li>Speech translation booklets for parents table (for each language)</li>
+        </ul>
+      </div>
+
+      <div class="d-block">
+        <h3>Cake</h3>
+        <ul>
+          <li>Desserts served as a buffet — table setup with flowers &amp; decorations</li>
+          <li>Elisa &amp; Nicos share the yogurt &amp; lemon dessert tray</li>
+          <li>Cutlery tied with a ribbon</li>
+        </ul>
+      </div>
+
+      <div class="d-block">
+        <h3>Wedding favours</h3>
+        <ul>
+          <li>Trays with sweets set on the table</li>
+          <li>Flowers &amp; decorations</li>
+          <li>Wedding book &amp; pens</li>
+        </ul>
+      </div>
+
+      <div class="d-block">
+        <h3>Inspo board</h3>
+        <p style="font-size:13px;color:var(--ink-mid);margin-bottom:10px">Decorations, table settings &amp; mood</p>
+        <a href="https://www.icloud.com/freeform/073tjYgYq0ZnK_lH-PStiBZBw#Wedding_Inspo" target="_blank">Open inspo board ↗</a>
+      </div>
+
+    </div>
+
+    <p class="sec-head">Inspiration gallery</p>
+    <p class="gallery-intro">A shared mood board for anything that catches your eye — decor, florals, table settings, outfits. Tap "+" to add a photo, tap any photo to view it full-size or remove it.</p>
+    <div class="insta-grid" id="photos-gallery"></div>
+    <input type="file" id="input-gallery" class="photo-input" accept="image/*" multiple onchange="addPhotos('gallery',this)">
+
+  </div>
+
+  <!-- ══ KEY LOCATIONS ══ -->
+  <div id="locations" class="panel">
+    <p class="sec-head first">Key locations</p>
+    <div class="map-wrap">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3162.2!2d23.4667!3d37.3500!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sHydra+Greece!5e0!3m2!1sen!2sgr!4v1700000000000!5m2!1sen!2sgr&q=Hydra,Greece"
+        allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;margin-bottom:1.5rem">
+      <a href="https://maps.app.goo.gl/UHFu3xuM2qRvm2pY6" target="_blank" style="font-size:12px;color:var(--sea);text-decoration:none;border-bottom:0.5px solid var(--sea)">📍 Lefteraki's Taverna (ceremony &amp; reception) ↗</a>
+      <a href="https://maps.app.goo.gl/UQUFqKv8jyEeBWoA9" target="_blank" style="font-size:12px;color:var(--sea);text-decoration:none;border-bottom:0.5px solid var(--sea)">📍 Commo Gousto (hair &amp; makeup) ↗</a>
+      <a href="https://maps.app.goo.gl/Y3oEhcXrAHs8zoUm7" target="_blank" style="font-size:12px;color:var(--sea);text-decoration:none;border-bottom:0.5px solid var(--sea)">📍 Hydra Port ↗</a>
+      <a href="https://maps.app.goo.gl/XST55vs5XnS5vtqY9?g_st=ic" target="_blank" style="font-size:12px;color:var(--sea);text-decoration:none;border-bottom:0.5px solid var(--sea)">📍 Nicos Dressing Party ↗</a>
+      <a href="https://maps.app.goo.gl/W9fxztwZvQqsY7xw6" target="_blank" style="font-size:12px;color:var(--sea);text-decoration:none;border-bottom:0.5px solid var(--sea)">📍 Elisa Dressing Party ↗</a>
+    </div>
+  </div>
+
+  <!-- ══ TASK FORCE ══ -->
+  <div id="team" class="panel">
+    <p class="sec-head first">Wedding task force</p>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-avatar">T</div>
+        <div>
+          <div class="contact-name">Theano</div>
+          <a class="contact-wa" href="https://wa.me/306989723766" target="_blank">
+            <svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            +30 698 972 3766
+          </a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-avatar">E</div>
+        <div>
+          <div class="contact-name">Emanuele</div>
+          <a class="contact-wa" href="https://wa.me/447311488328" target="_blank">
+            <svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            +44 7311 488 328
+          </a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-avatar">V</div>
+        <div>
+          <div class="contact-name">Virginia</div>
+          <a class="contact-wa" href="https://wa.me/306940755323" target="_blank">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            +30 694 075 5323
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <p class="sec-head" style="margin-top:2rem">Other contacts</p>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-avatar" style="background:var(--terra-light);color:var(--terra)">N</div>
+        <div>
+          <div class="contact-name">Nikolaos Mavros</div>
+          <div class="contact-role">Lefteraki's Taverna venue &amp; taxi boats</div>
+          <a class="contact-wa" href="https://wa.me/306978883553" target="_blank">
+            <svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            +30 697 888 3553
+          </a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-avatar" style="background:var(--sea-light);color:var(--sea)">E</div>
+        <div>
+          <div class="contact-name">Elo</div>
+          <div class="contact-role">Photographer</div>
+          <a class="contact-wa" href="https://wa.me/34670749260" target="_blank">
+            <svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            +34 670 74 92 60
+          </a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-avatar" style="background:var(--olive-light);color:var(--olive)">D</div>
+        <div>
+          <div class="contact-name">Dimitris Rigas</div>
+          <div class="contact-role">DJ</div>
+          <a class="contact-wa" href="https://wa.me/306949192689" target="_blank">
+            <svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            +30 694 919 2689
+          </a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-avatar" style="background:var(--sea-light);color:var(--sea)">I</div>
+        <div>
+          <div class="contact-name">Ioannis Belegris</div>
+          <div class="contact-role">Vice Mayor</div>
+          <a class="contact-wa" href="https://wa.me/306980316641" target="_blank">
+            <svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            +30 698 031 6641
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+  <button class="lightbox-del" onclick="deletePhoto()">Remove photo</button>
+</div>
+
+<footer>
+  <p>Elisa &amp; Nicos · 19 September 2026 · Hydra, Greece &nbsp;·&nbsp; <a href="https://nicosandelisa.wixsite.com/nicosandelisa" target="_blank">nicosandelisa.wixsite.com</a></p>
+</footer>
+
+<script>
+// ── DROPDOWN ──
+function toggleOvDropdown(row) { row.classList.toggle('open'); }
+
+// ── TABS ──
+function showPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── TODOS ──
+const TODO_KEY = 'en-todos-v3';
+function loadTodos() { try { return JSON.parse(localStorage.getItem(TODO_KEY) || '{}'); } catch(e) { return {}; } }
+function saveTodos(s) { try { localStorage.setItem(TODO_KEY, JSON.stringify(s)); } catch(e) {} }
+function updateProgress() {
+  const checks = document.querySelectorAll('.todo-check');
+  const total = checks.length;
+  const done = [...checks].filter(c => c.checked).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById('todo-done-count').textContent = done + ' of ' + total + ' done';
+  document.getElementById('todo-pct').textContent = pct + '%';
+  document.getElementById('todo-bar').style.width = pct + '%';
+}
+function initTodos() {
+  const state = loadTodos();
+  document.querySelectorAll('.todo-check').forEach(cb => {
+    if (state[cb.dataset.id]) { cb.checked = true; cb.closest('.todo-item').classList.add('done'); }
+    cb.addEventListener('change', function() {
+      const s = loadTodos(); s[this.dataset.id] = this.checked; saveTodos(s);
+      this.closest('.todo-item').classList.toggle('done', this.checked);
+      updateProgress();
+    });
+  });
+  updateProgress();
+}
+
+// ── PHOTOS ──
+const PHOTO_KEY = 'en-photos-v1';
+let lightboxSection = null;
+let lightboxIndex = null;
+
+function loadPhotos() { try { return JSON.parse(localStorage.getItem(PHOTO_KEY) || '{}'); } catch(e) { return {}; } }
+function savePhotos(d) { try { localStorage.setItem(PHOTO_KEY, JSON.stringify(d)); } catch(e) { alert('Storage full — try removing some photos.'); } }
+
+function renderInstaGrid(section) {
+  const data = loadPhotos();
+  const grid = document.getElementById('photos-' + section);
+  if (!grid) return;
+  grid.innerHTML = '';
+  (data[section] || []).forEach((src, i) => {
+    const item = document.createElement('div');
+    item.className = 'insta-item';
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = 'inspiration photo';
+    img.onclick = () => openLightbox(section, i);
+    item.appendChild(img);
+    grid.appendChild(item);
+  });
+  const addTile = document.createElement('div');
+  addTile.className = 'insta-add';
+  addTile.textContent = '+';
+  addTile.onclick = () => document.getElementById('input-' + section).click();
+  grid.appendChild(addTile);
+}
+
+function compressImage(file, maxPx, quality, cb) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      let w = img.width, h = img.height;
+      if (w > maxPx || h > maxPx) {
+        if (w > h) { h = Math.round(h * maxPx / w); w = maxPx; }
+        else { w = Math.round(w * maxPx / h); h = maxPx; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      cb(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function addPhotos(section, input) {
+  const files = Array.from(input.files);
+  const data = loadPhotos();
+  if (!data[section]) data[section] = [];
+  let pending = files.length;
+  files.forEach(file => {
+    compressImage(file, 1200, 0.75, compressed => {
+      data[section].push(compressed);
+      pending--;
+      if (pending === 0) { savePhotos(data); renderInstaGrid(section); }
+    });
+  });
+  input.value = '';
+}
+
+function openLightbox(section, index) {
+  const data = loadPhotos();
+  lightboxSection = section; lightboxIndex = index;
+  document.getElementById('lightbox-img').src = (data[section] || [])[index] || '';
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(e) {
+  if (e && e.target !== document.getElementById('lightbox') && !e.target.classList.contains('lightbox-close')) return;
+  document.getElementById('lightbox').classList.remove('open');
+  lightboxSection = null; lightboxIndex = null;
+}
+function deletePhoto() {
+  if (lightboxSection === null) return;
+  const data = loadPhotos();
+  data[lightboxSection].splice(lightboxIndex, 1);
+  savePhotos(data);
+  renderInstaGrid(lightboxSection);
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+function initPhotos() {
+  renderInstaGrid('gallery');
+}
+
+document.addEventListener('DOMContentLoaded', () => { initTodos(); initPhotos(); });
+</script>
+</body>
+</html>
